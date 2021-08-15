@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-""" This module does x, for y, beacause of z. 
+""" This module does x, for y, because of z. 
 
 
 Use it by taking the following steps:
