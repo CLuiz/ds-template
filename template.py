@@ -130,6 +130,7 @@ def get_metrics(data_dict):
 
     return metrics
 
+
 def build_model(df, model_type)
     """ This function takes a pandas DataFrame of engineered features as output
     by engineer_features and returns a trained model object and metrics.
@@ -152,17 +153,49 @@ def build_model(df, model_type)
     return df, metrics
 
 
-def main(df):
+def predict(model, data):
+    """ Return model prediction.
+
+    Args:
+        model: model object with predict method
+        data: data point to predict
+
+    Returns:
+        prediction
+
+    """
+    return model.predict(data)
+
+
+def main(args):
+    """ execute primary module functionality
+    """
+    # TODO moce these config options ot a separate file and read at runtime
+    inference_only = False
+    train_model = False
     save_model = False
+    model_filepath = None 
 
-    df = get_data(path1, path2)
-    processed_df = proces_data(df)
-    feature_df = engineer_features(processed_df)
-    model, metrics = build_model(df, model_type)
+    if train_model:
+        # read data and prep data
+        df = get_data(path1, path2)
+        processed_df = proces_data(df)
+        feature_df = engineer_features(processed_df)
+        
+        
+        # build model and run metrics
+        # add logging or print statement to capture metrics, if desired
+        model, metrics = build_model(df, model_type)
 
-    if save_model:
-        pickle.
+        if save_model:
+            pickle.dump(model, model_filepath)
+    
+
+
+    return predict(model, data)
 
 
 if 'name' == '__main__':
-    main()
+    args = sys.argv[1:]
+    
+    main(args)
