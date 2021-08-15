@@ -171,6 +171,7 @@ def main(args):
     """ execute primary module functionality
     """
     # TODO move these config options ot a separate file and read at runtime
+    # TODO add conditional argv parsing for the config options
 
     # load existing model from pickle
     inference_only = False
