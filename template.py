@@ -42,7 +42,7 @@ __credits__ = ["One developer", "And another one", "etc"]
 __date__ = "YYYY/MM/DD"
 __deprecated__ = False
 __email__ =  "mail@example.com"
-__license__ = "GPLv3"
+__license__ = "MIT"
 __maintainer__ = "developer"
 __status__ = "Production"
 __version__ = "0.0.1"
@@ -170,10 +170,19 @@ def predict(model, data):
 def main(args):
     """ execute primary module functionality
     """
-    # TODO moce these config options ot a separate file and read at runtime
+    # TODO move these config options ot a separate file and read at runtime
+
+    # load existing model from pickle
     inference_only = False
+    
+    # Retrain the model
     train_model = False
+    
+    # Save the model as a pickle for future inference.
     save_model = False
+    
+    # Destination filepath for saved model. Used both as a target when saving
+    # and when retrieving a saved model
     model_filepath = None 
 
     if train_model:
@@ -182,20 +191,23 @@ def main(args):
         processed_df = proces_data(df)
         feature_df = engineer_features(processed_df)
         
-        
         # build model and run metrics
-        # add logging or print statement to capture metrics, if desired
         model, metrics = build_model(df, model_type)
-
+        # add logging or print statement to capture metrics, if desired
+        
         if save_model:
-            pickle.dump(model, model_filepath)
+            with open(model_filepath, 'wb') as filepath:
+                pickle.dump(model, filepath)
     
+    else:
+        with open(model_filepath, 'rb') as filepath:
+            model = pickle.load(filepath)
 
 
     return predict(model, data)
 
 
-if 'name' == '__main__':
-    args = sys.argv[1:]
+if '__name__' == '__main__':
+    args = sys.argv[0:]
     
     main(args)
