@@ -52,13 +52,13 @@ __version__ = "0.0.1"
 """
 
 # standard lib imports
-from collections import defaultDict
 import pickle
+import sys
 
 # other imports
 import numpy as np
-import pandas as pd
-from statsmodels.tsa.arima_model import Arima
+#import pandas as pd
+#from statsmodels.tsa.arima_model import Arima
 
 
 def get_data(path1, path2):
@@ -131,7 +131,7 @@ def get_metrics(data_dict):
     return metrics
 
 
-def build_model(df, model_type)
+def build_model(df, model_type):
     """ This function takes a pandas DataFrame of engineered features as output
     by engineer_features and returns a trained model object and metrics.
 
@@ -186,6 +186,7 @@ def main(args):
     # and when retrieving a saved model
     model_filepath = None
 
+
     if train_model:
         # read data and prep data
         df = get_data(path1, path2)
@@ -208,7 +209,17 @@ def main(args):
     return predict(model, data)
 
 
-if '__name__' == '__main__':
-    args = sys.argv[0:]
+if __name__ == '__main__':
+    #print("i'm working")
 
+    args = sys.argv[1:]
+    if len(args) > 1:
+        # model training code here
+        print("I'm training the model")
+        print(f"I'm predicting arg1 (predict file: {args[0]}")
+        print(f"file1: {args[1]}")
+        print(f"file2: {args[2]}")
+
+    else:
+        print("I'm predicting arg1 (predict file: {args[0]}")
     main(args)
