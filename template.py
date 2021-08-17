@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-""" This module does x, for y, because of z. 
+""" This module does x, for y, because of z.
 
 
 Use it by taking the following steps:
@@ -52,22 +52,22 @@ __version__ = "0.0.1"
 """
 
 # standard lib imports
-from collections import defaultDict
 import pickle
+import sys
 
 # other imports
 import numpy as np
-import pandas as pd 
-from statsmodels.tsa.arima_model import Arima
+#import pandas as pd
+#from statsmodels.tsa.arima_model import Arima
 
 
 def get_data(path1, path2):
     """ This function reads the data from two csvs.
-    
+
     Args:
        path1: filepath to first csv
-       path2: filepath to second csv 
-    
+       path2: filepath to second csv
+
     Returns: pandas DataFrame
     """
 
@@ -77,16 +77,16 @@ def get_data(path1, path2):
 
     # join files
 
-    return df 
+    return df
 
 
 def process_data(df):
     """ This function processes a pandas DataFrame as output by get_data and
     returns a pandas DataFrame of cleaned data for analysis.
-    
+
     Args:
        df: pandas DataFrame as output by get_data
-    
+
     Returns: processed pandas DataFrame ready for analysis
     """
     # process column headers
@@ -101,12 +101,12 @@ def process_data(df):
 
 
 def engineer_features(df):
-    """ This function takes a pandas DataFrame as output by process_data 
+    """ This function takes a pandas DataFrame as output by process_data
     and returns a pandas DataFrame with features ready for modeling.
-    
+
     Args:
        df: cleanded pandas DataFrame as output by process_data
-    
+
     Returns: pandas DataFrame with features ready for modeling
     """
     # feature 1 code
@@ -121,7 +121,7 @@ def engineer_features(df):
 def get_metrics(data_dict):
     """
 
-    Args: 
+    Args:
         data_dict (dict): dict containing X_train, X_test, y_train, y_test
 
     Returns: metrics
@@ -131,14 +131,14 @@ def get_metrics(data_dict):
     return metrics
 
 
-def build_model(df, model_type)
+def build_model(df, model_type):
     """ This function takes a pandas DataFrame of engineered features as output
     by engineer_features and returns a trained model object and metrics.
-    
+
     Args:
        df: pandas DataFrame cleaned features as output by engineer_features
        model_type: model to fit
-    
+
     Returns: trained_model
     """
     # split data and create data_dict
@@ -175,31 +175,32 @@ def main(args):
 
     # load existing model from pickle
     inference_only = False
-    
+
     # Retrain the model
     train_model = False
-    
+
     # Save the model as a pickle for future inference.
     save_model = False
-    
+
     # Destination filepath for saved model. Used both as a target when saving
     # and when retrieving a saved model
-    model_filepath = None 
+    model_filepath = None
+
 
     if train_model:
         # read data and prep data
         df = get_data(path1, path2)
         processed_df = proces_data(df)
         feature_df = engineer_features(processed_df)
-        
+
         # build model and run metrics
         model, metrics = build_model(df, model_type)
         # add logging or print statement to capture metrics, if desired
-        
+
         if save_model:
             with open(model_filepath, 'wb') as filepath:
                 pickle.dump(model, filepath)
-    
+
     else:
         with open(model_filepath, 'rb') as filepath:
             model = pickle.load(filepath)
@@ -208,7 +209,17 @@ def main(args):
     return predict(model, data)
 
 
-if '__name__' == '__main__':
-    args = sys.argv[0:]
-    
+if __name__ == '__main__':
+    #print("i'm working")
+
+    args = sys.argv[1:]
+    if len(args) > 1:
+        # model training code here
+        print("I'm training the model")
+        print(f"I'm predicting arg1 (predict file: {args[0]}")
+        print(f"file1: {args[1]}")
+        print(f"file2: {args[2]}")
+
+    else:
+        print("I'm predicting arg1 (predict file: {args[0]}")
     main(args)
